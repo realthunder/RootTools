@@ -44,6 +44,7 @@ class Runner extends Thread {
     public void run() {
         String privateFilesPath = null;
         try {
+            // /data/data/app.package/files/
             privateFilesPath = context.getFilesDir().getCanonicalPath();
         } catch (IOException e) {
             if (RootTools.debugMode) {
@@ -53,9 +54,7 @@ class Runner extends Thread {
         }
         if (privateFilesPath != null) {
             try {
-            	CommandCapture command = new CommandCapture(0, privateFilesPath + "/" + binaryName + " " + parameter);
-            	Shell.startRootShell().add(command);
-            	command.waitForFinish();
+            	RootTools.sendShell(new String[] { privateFilesPath + "/" + binaryName + " " + parameter }, 0, -1);
 			} catch (Exception e) {}
         }
     }
