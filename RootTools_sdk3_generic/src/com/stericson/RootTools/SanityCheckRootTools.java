@@ -79,7 +79,11 @@ public class SanityCheckRootTools extends Activity {
             print("[ TIMEOUT EXCEPTION! ]\n");
 			e.printStackTrace();
 		}
-		
+        catch (Shell.RootDeniedException e) {
+            print("[ ROOT DENIED EXCEPTION! ]\n");
+            e.printStackTrace();
+        }
+
         try {
 			if (false == RootTools.isAccessGiven()) {
 			    print("ERROR: No root access to this device.\n");

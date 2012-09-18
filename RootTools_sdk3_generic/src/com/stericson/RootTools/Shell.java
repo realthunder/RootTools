@@ -50,7 +50,14 @@ public class Shell {
 	private static Shell shell = null;
 	private static Shell customShell = null;
 
-	private Shell(String cmd) throws IOException, TimeoutException {
+    public class RootDeniedException extends Exception {
+
+        public RootDeniedException(java.lang.String detailMessage) {
+            super(detailMessage);
+        }
+    };
+
+	private Shell(String cmd) throws IOException, TimeoutException, RootDeniedException {
 
 		RootTools.log("Starting shell: " + cmd);
 
@@ -70,6 +77,11 @@ public class Shell {
 				
             	throw new TimeoutException(error);
               
+            }
+            else if (worker.exit == -42) {
+                proc.destroy();
+
+                throw new RootDeniedException("Root access denied");
             }
             else
             {
@@ -95,7 +107,7 @@ public class Shell {
 			return shell;
 	}
 	
-	public static Shell startRootShell() throws IOException, TimeoutException {
+	public static Shell startRootShell() throws IOException, TimeoutException, RootDeniedException {
 		if (rootShell == null) {
 			RootTools.log("Starting Root Shell!");
 			String cmd = "su";
@@ -111,8 +123,11 @@ public class Shell {
 						RootTools.log("IOException, could not start shell");
 						throw e;
 					}
-				}
-			}
+				} catch (RootDeniedException e) {
+                    RootTools.log("RootFailedException, could not start shell");
+                    throw e;
+                }
+            }
 		}
 		else
 		{
@@ -122,7 +137,7 @@ public class Shell {
 		return rootShell;
 	}
 
-	public static Shell startCustomShell(String shellPath) throws IOException, TimeoutException {
+	public static Shell startCustomShell(String shellPath) throws IOException, TimeoutException, RootDeniedException {
 		if (customShell == null) {
 			RootTools.log("Starting Custom Shell!");
 			customShell = new Shell(shellPath);
@@ -133,7 +148,7 @@ public class Shell {
 		return customShell;
 	}
 	
-	public static Shell startShell() throws IOException, TimeoutException {
+	public static Shell startShell() throws IOException, TimeoutException, RootDeniedException {
 		if (shell == null) {
 			RootTools.log("Starting Shell!");
 			shell = new Shell("/system/bin/sh");
@@ -143,11 +158,11 @@ public class Shell {
 		return shell;
 	}
 
-	public static void runRootCommand(Command command) throws IOException, TimeoutException {
+	public static void runRootCommand(Command command) throws IOException, TimeoutException, RootDeniedException {
 		startRootShell().add(command);
 	}
 
-	public static void runCommand(Command command) throws IOException, TimeoutException {
+	public static void runCommand(Command command) throws IOException, TimeoutException, RootDeniedException {
 		startShell().add(command);
 	}
 
@@ -390,14 +405,15 @@ public class Shell {
 						this.exit = 1;
 						break;
 					}
-					Shell.error = "unkown error occured.";
+					Shell.error = "unknown error occured.";
 				}
 			}
 			catch (Exception e) {
+                exit = -42;
 				if (e.getMessage() != null)
 					Shell.error = e.getMessage();
 				else
-					Shell.error = "unkown error occured.";
+					Shell.error = "unknown error occured.";
 			}
 		}
     }
