@@ -16,9 +16,7 @@ To sum it up: We all win.
 
 Here is what we envision: the Developmental branch will need to be kept updated as either repository receives new check-ins. Similarly, the Stable branch will need to be integrated with the new code from the Developmental branch.
 
-The Stable branch is currently made available on Google Code only so that, if you are not interested in contributing or curious about the code, you have one canonical place where to get the latest release of RootTools.
-
-Stericson and I (aka CyanSmoker) will keep the updates flowing between Github and SVN so that both repositories are always up-to-date.
+The stable version will always be in 'master'. The newest development is in the 'develop' branch.
 
 # Can I contribute?
 
@@ -26,4 +24,4 @@ Actions speak louder than words! Contributions are welcome and Git sure makes it
 
 Thanks for your help!
 
--Chris.
+-Chris. (Edited by ramdroid)
