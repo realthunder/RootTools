@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -12,10 +13,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.exceptions.RootDeniedException;
+import com.stericson.RootTools.execution.Command;
+import com.stericson.RootTools.execution.Shell;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 public class Example extends Activity {
 	
-	private Button busybox, superuser, isBusyBox, isRootAvailable, isAccessGiven, isNativeToolsReady, hasEnoughSpaceOnSdCard;
+	private Button busybox, superuser, isBusyBox, isRootAvailable, isAccessGiven, isNativeToolsReady, hasEnoughSpaceOnSdCard, testCmd;
 	
     /** Called when the activity is first created. */
     @Override
@@ -102,6 +111,45 @@ public class Example extends Activity {
         			makeToast("either there is not enough space on the SDcard for a 100mb, or the SDcard is not mounted as RW!");
         		}
         	}
+        });
+
+        testCmd = (Button) findViewById(R.id.testCmd);
+        testCmd.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final List<String> log = new ArrayList<String>();
+                Command cmd = new Command(1,
+                        "mkdir /mnt/sdcard/Test",
+                        "mount -o bind /mnt/sdcard/Download /mnt/sdcard/Test") {
+                        //"echo \"mount -o bind /mnt/sdcard/Download /mnt/sdcard/Test\" > /data/local/tmp/mnt.sh",
+                        //"chmod 777 /data/local/tmp/mnt.sh",
+                        //"/data/local/tmp/mnt.sh") {
+
+                    @Override
+                    public void output(int id, String line) {
+                        log.add("Command result: " + line);
+                    }
+                };
+                try {
+                    Shell shell = RootTools.getShell(true);
+                    int exitCode = shell.add(cmd).exitCode();
+                    log.add("Command exit code: " + exitCode);
+                } catch (IOException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (TimeoutException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (RootDeniedException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (InterruptedException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+
+                String result = "";
+                for (String s : log) {
+                    result += s + "\n";
+                }
+                makeToast(result);
+            }
         });
     }
     
