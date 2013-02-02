@@ -8,5 +8,6 @@
     <string name="isAccessGiven">Example: isAccessGiven</string>
     <string name="isNativeToolsReady">Example: isNativeToolsReady</string>
     <string name="hasEnoughSpaceOnSdCard">Example: hasEnoughSpaceOnSdCard (100mb)</string>
+    <string name="testCmd">Example: test command</string>
     <string name="app_name">Example_RootTools_sdk3_generic</string>
 </resources>
