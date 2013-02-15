@@ -45,11 +45,7 @@
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
-<<<<<<< HEAD:RootTools_sdk3_generic/RootTools.iml
-    <orderEntry type="jdk" jdkName="Android 4.1 Platform" jdkType="Android SDK" />
-=======
     <orderEntry type="jdk" jdkName="Android 4.2 Platform" jdkType="Android SDK" />
->>>>>>> develop:RootTools_sdk3_generic/RootTools_sdk3_generic.iml
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
