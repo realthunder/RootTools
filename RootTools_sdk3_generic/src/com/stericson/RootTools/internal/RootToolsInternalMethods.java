@@ -111,9 +111,11 @@ public final class RootToolsInternalMethods
 					int tmp = line.indexOf("/");
 					InternalVariables.path = new HashSet<String>(
 							Arrays.asList(line.substring(tmp).split(":")));
+					lnr.close();
 					return true;
 				}
 			}
+			lnr.close();
 			return false;
 		}
 		catch (Exception e)
@@ -147,6 +149,7 @@ public final class RootToolsInternalMethods
 						new File(fields[fields.length - 1]) // SymlinkPath
 				));
 			}
+			lnr.close();
 			return symlink;
 		}
 		finally
@@ -993,6 +996,7 @@ public final class RootToolsInternalMethods
 					fields[3] // flags
 			));
 		}
+		lnr.close();
 		InternalVariables.mounts = mounts;
 		
         if (InternalVariables.mounts != null) {
