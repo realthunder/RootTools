@@ -38,7 +38,7 @@ public abstract class Command {
 	boolean finished = false;
 	int exitCode;
 	int id = 0;
-	int timeout = 5000;
+	int timeout = -1;
 
 	public Command(int id, String... command) {
 		this.command = command;
@@ -100,7 +100,10 @@ public abstract class Command {
 	public void waitForFinish(int timeout) throws InterruptedException {
 		synchronized (this) {
 			while (!finished) {
-				this.wait(timeout);
+				if(timeout>0)
+					this.wait(timeout);
+				else
+					this.wait();
 				
 				if (!finished)
 				{
