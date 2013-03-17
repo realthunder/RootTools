@@ -52,7 +52,7 @@ public class Shell {
 
     private static int shellTimeout = 10000;
 
-	private Shell(String cmd) throws IOException, TimeoutException, RootDeniedException {
+	public Shell(String cmd) throws IOException, TimeoutException, RootDeniedException {
 
 		RootTools.log("Starting shell: " + cmd);
 
